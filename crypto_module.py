@@ -28,10 +28,6 @@ class CryptoModule:
 
         data_to_embed = struct.pack('II', payload_length, crc32_value) + payload
         
-        print(f"[DEBUG] Длина полезных данных: {payload_length} байт")
-        print(f"[DEBUG] CRC32: {crc32_value:08x}")
-        print(f"[DEBUG] Общая длина для встраивания: {len(data_to_embed)} байт")
-        
         return data_to_embed
     
     @staticmethod

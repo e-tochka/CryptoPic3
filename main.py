@@ -4,11 +4,6 @@ from crypto_module import CryptoModule
 from stego_module import StegoModule
 from analysis_module import AnalysisModule
 
-def print_banner():
-    print("=" * 60)
-    print("ГИБРИДНАЯ ЗАЩИТА: ШИФРОВАНИЕ + СТЕГАНОГРАФИЯ")
-    print("Лабораторная работа №3")
-    print("=" * 60)
 
 def embed_message():
     print("\n--- ВСТРАИВАНИЕ СООБЩЕНИЯ ---")
@@ -160,7 +155,6 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     
     while True:
-        print_banner()
         print("\nМЕНЮ:")
         print("1. Зашифровать и встроить сообщение")
         print("2. Извлечь и расшифровать сообщение")

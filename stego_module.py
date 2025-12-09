@@ -42,8 +42,6 @@ class StegoModule:
         data_bits_needed = len(data) * 8
         capacity = StegoModule.calculate_capacity(img_array)
         
-        print(f"[DEBUG] Емкость изображения: {capacity} бит")
-        print(f"[DEBUG] Требуется бит: {data_bits_needed}")
         
         if data_bits_needed > capacity:
             print(f"[ERROR] Недостаточно емкости! Требуется: {data_bits_needed}, доступно: {capacity}")
@@ -66,11 +64,6 @@ class StegoModule:
                 original = stego_array[y, x, channel]
                 new_value = (original & 0xFE) | data_bits[i]
                 stego_array[y, x, channel] = new_value
-                
-                if i < 10:
-                    print(f"[DEBUG] Позиция {i}: ({y},{x},{channel}) "
-                          f"{original:03d} -> {new_value:03d} "
-                          f"(бит={data_bits[i]})")
         
         stego_img = Image.fromarray(stego_array)
         stego_img.save(output_path)
@@ -110,9 +103,6 @@ class StegoModule:
         
         try:
             payload_length, crc32_stored = struct.unpack('II', header_bytes[:8])
-            
-            print(f"[DEBUG] Извлеченная длина данных: {payload_length} байт")
-            print(f"[DEBUG] Извлеченный CRC32: {crc32_stored:08x}")
             
             total_data_length = 8 + payload_length
             total_bits_needed = total_data_length * 8
