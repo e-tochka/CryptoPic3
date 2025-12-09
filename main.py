@@ -126,23 +126,6 @@ def compare_methods():
     
     print("\nАнализ изображений...")
     results = AnalysisModule.compare_methods(original, simple, hybrid)
-    
-    with open("report.txt", "w", encoding="utf-8") as f:
-        f.write("ОТЧЕТ О СРАВНЕНИИ МЕТОДОВ СТЕГАНОГРАФИИ\n")
-        f.write("=" * 50 + "\n\n")
-        f.write(f"1. Качество (PSNR):\n")
-        f.write(f"   - Простой LSB: {results['psnr_simple']:.2f} dB\n")
-        f.write(f"   - Гибридный метод: {results['psnr_hybrid']:.2f} dB\n\n")
-        
-        f.write(f"2. Измененные пиксели:\n")
-        f.write(f"   - Простой LSB: {results['changed_pixels_simple']:,}\n")
-        f.write(f"   - Гибридный метод: {results['changed_pixels_hybrid']:,}\n\n")
-        
-        f.write("3. ВЫВОДЫ:\n")
-        if results['psnr_hybrid'] > results['psnr_simple']:
-            f.write("   ✓ Гибридный метод менее заметен (выше PSNR)\n")
-        else:
-            f.write("   ✓ Простой LSB менее заметен (выше PSNR)\n")
 
 
 def main():
