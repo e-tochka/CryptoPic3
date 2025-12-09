@@ -8,22 +8,26 @@ from analysis_module import AnalysisModule
 def embed_message():
     print("\n--- ВСТРАИВАНИЕ СООБЩЕНИЯ ---")
     
-    message_file = input("Файл с сообщением (txt): ").strip()
+    print("Файл с сообщением (txt):")
+    message_file = input("> ").strip()
     if not os.path.exists(message_file):
         print(f"Ошибка: файл '{message_file}' не найден!")
         return
     
-    password = input("Пароль: ").strip()
+    print("Введите пароль:")
+    password = input("> ").strip()
     if not password:
         print("Ошибка: пароль не может быть пустым!")
         return
     
-    image_path = input("Изображение-контейнер: ").strip()
+    print("Подопытная фотокарточка:")
+    image_path = input("> ").strip()
     if not os.path.exists(image_path):
         print(f"Ошибка: файл '{image_path}' не найден!")
         return
     
-    output_name = input("Имя для стегоизображения (без расширения): ").strip()
+    print("Имя для стегоизображения (без расширения):")
+    output_name = input("> ").strip()
     if not output_name:
         output_name = "stego_output"
     
@@ -61,17 +65,20 @@ def embed_message():
 def extract_message():
     print("\n--- ИЗВЛЕЧЕНИЕ СООБЩЕНИЯ ---")
     
-    stego_path = input("Стегоизображение: ").strip()
+    print("Стегоизображение:")
+    stego_path = input("> ").strip()
     if not os.path.exists(stego_path):
         print(f"Ошибка: файл '{stego_path}' не найден!")
         return
     
-    password = input("Пароль: ").strip()
+    print("Введите пароль:")
+    password = input("> ").strip()
     if not password:
         print("Ошибка: пароль не может быть пустым!")
         return
     
-    output_file = input("Файл для сохранения (просто тыкни Enter и будет дефолтный txt.txt): ").strip()
+    print("Файл для сохранения (просто тыкни Enter и будет дефолтный txt.txt):")
+    output_file = input("> ").strip()
     if not output_file:
         output_file = "txt.txt"
     output_file = "result/messages/" + output_file
@@ -106,9 +113,12 @@ def extract_message():
 def compare_methods():
     print("\n--- СРАВНЕНИЕ МЕТОДОВ ---")
     
-    original = input("Оригинальное изображение: ").strip()
-    simple = input("Изображение с простым LSB: ").strip()
-    hybrid = input("Изображение с гибридным методом: ").strip()
+    print("Оригинальное изображение:")
+    original = input("> ").strip()
+    print("Изображение с простым LSB:")
+    simple = input("> ").strip()
+    print("Изображение с гибридным методом:")
+    hybrid = input("> ").strip()
     
     if not all(os.path.exists(f) for f in [original, simple, hybrid]):
         print("Ошибка: один или несколько файлов не найдены!")
@@ -134,9 +144,6 @@ def compare_methods():
         else:
             f.write("   ✓ Простой LSB менее заметен (выше PSNR)\n")
 
-    
-    print(f"\nОтчет сохранен в: comparison_report.txt")
-    print(f"Графики сохранены в: comparison_results.png")
 
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -151,7 +158,7 @@ def main():
         print("3. Сравнить методы стеганографии")
         print("4. Выйти")
         
-        choice = input("\nВыберите действие (1-4): ").strip()
+        choice = input("\n> ").strip()
         
         if choice == "1":
             embed_message()

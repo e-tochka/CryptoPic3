@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 class AnalysisModule:
     @staticmethod
@@ -36,41 +37,40 @@ class AnalysisModule:
         print(f"Изменено {diff_simple / original.size * 100:.2f}% пикселей (простой)")
         print(f"Изменено {diff_hybrid / original.size * 100:.2f}% пикселей (гибридный)")
         
-        fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+        fig, axes = plt.subplots(1, 2, figsize=(16, 6))
         
-        axes[0, 0].imshow(original)
-        axes[0, 0].set_title("Оригинал")
-        axes[0, 0].axis('off')
+        diff_img_simple = np.sum(original != simple, axis=2) > 0
         
-
-        axes[0, 1].imshow(simple)
-        axes[0, 1].set_title("Простой LSB")
-        axes[0, 1].axis('off')
+        im1 = axes[0].imshow(diff_img_simple, cmap='Reds', aspect='auto')
+        axes[0].set_title("Простой LSB", fontsize=14, fontweight='bold', pad=15)
+        axes[0].axis('off')
         
-        axes[0, 2].imshow(hybrid)
-        axes[0, 2].set_title("Гибридный метод")
-        axes[0, 2].axis('off')
+        diff_img_hybrid = np.sum(original != hybrid, axis=2) > 0
         
-        diff_img_simple = np.sum(np.abs(original - simple), axis=2)
-        diff_img_hybrid = np.sum(np.abs(original - hybrid), axis=2)
+        im2 = axes[1].imshow(diff_img_hybrid, cmap='Blues', aspect='auto')
+        axes[1].set_title("Гибридный метод", fontsize=14, fontweight='bold', pad=15)
+        axes[1].axis('off')
         
-        axes[1, 0].imshow(diff_img_simple, cmap='hot')
-        axes[1, 0].set_title("Разность (простой)")
-        axes[1, 0].axis('off')
+        axes[0].text(0.5, -0.05, f'Изменено пикселей: {diff_simple:,} ({diff_simple/original.size*100:.1f}%)', 
+                    transform=axes[0].transAxes, ha='center', fontsize=11, fontweight='bold')
+        axes[1].text(0.5, -0.05, f'Изменено пикселей: {diff_hybrid:,} ({diff_hybrid/original.size*100:.1f}%)', 
+                    transform=axes[1].transAxes, ha='center', fontsize=11, fontweight='bold')
         
-        axes[1, 1].imshow(diff_img_hybrid, cmap='hot')
-        axes[1, 1].set_title("Разность (гибридный)")
-        axes[1, 1].axis('off')
+        from matplotlib.patches import Patch
+        legend_elements = [
+            Patch(facecolor='white', edgecolor='black', label='Без изменений'),
+            Patch(facecolor='red', edgecolor='black', label='Изменен (Простой LSB)'),
+            Patch(facecolor='blue', edgecolor='black', label='Изменен (Гибридный)')
+        ]
         
-        axes[1, 2].hist([original_lsb, simple_lsb, hybrid_lsb], 
-                       label=['Оригинал', 'Простой', 'Гибрид'], alpha=0.7)
-        axes[1, 2].set_title("Распределение LSB")
-        axes[1, 2].legend()
-        axes[1, 2].set_xlabel("Значение LSB")
-        axes[1, 2].set_ylabel("Частота")
+        fig.legend(handles=legend_elements, loc='upper center', 
+                  bbox_to_anchor=(0.5, 0.95), ncol=3, fontsize=11)
         
-        plt.tight_layout()
-        plt.savefig('comparison_results.png')
+        plt.suptitle('Сравнение методов стеганографии: Измененные пиксели', 
+                    fontsize=16, fontweight='bold', y=1.0)
+        
+        plt.tight_layout(rect=[0, 0, 1, 0.92])
+        plt.savefig('result/hotmap.png', dpi=150, bbox_inches='tight')
         plt.show()
         
         return {
