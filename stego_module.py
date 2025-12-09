@@ -44,7 +44,7 @@ class StegoModule:
         
         
         if data_bits_needed > capacity:
-            print(f"[ERROR] Недостаточно емкости! Требуется: {data_bits_needed}, доступно: {capacity}")
+            print(f"Недостаточно емкости! Требуется: {data_bits_needed}, доступно: {capacity}")
             return False
         
         data_bits = []
@@ -144,7 +144,7 @@ class StegoModule:
         capacity = StegoModule.calculate_capacity(img_array)
         
         if data_bits_needed > capacity:
-            print(f"[ERROR] Недостаточно емкости для простого LSB!")
+            print(f"Недостаточно емкости для простого LSB!")
             return False
         
         data_bits = []
