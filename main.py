@@ -30,21 +30,18 @@ def embed_message():
     try:
         with open(message_file, 'r', encoding='utf-8') as f:
             message = f.read()
-        print(f"Прочитано сообщение длиной {len(message)} символов")
     except Exception as e:
         print(f"Ошибка чтения файла: {e}")
         return
     
-    print("\n[1/3] Шифрование сообщения...")
+    print("\nШифрование сообщения...")
     try:
         data_to_embed = CryptoModule.prepare_data_for_embedding(message, password)
-        print(f"Подготовлено {len(data_to_embed)} байт для встраивания")
     except Exception as e:
         print(f"Ошибка шифрования: {e}")
         return
     
-    print("[2/3] Встраивание данных (гибридный метод)...")
-    hybrid_output = output_name + "_hybrid.png"
+    hybrid_output = "result/imgs/" + output_name + ".png"
     success = StegoModule.embed_data_with_metadata(
         image_path, data_to_embed, password, hybrid_output
     )
@@ -53,14 +50,12 @@ def embed_message():
         print("Не удалось встроить данные (недостаточно емкости)")
         return
     
-    print("[3/3] Встраивание данных (простой LSB)...")
-    simple_output = output_name + "_simple.png"
+    simple_output = "result/imgs/" + output_name + "_simpleLSB.png"
     StegoModule.simple_lsb_embed(image_path, data_to_embed, simple_output)
     
     print("\n" + "=" * 60)
-    print("РЕЗУЛЬТАТ:")
-    print(f"1. Гибридный метод: {hybrid_output}")
-    print(f"2. Простой LSB: {simple_output}")
+    print(f"Гибридный метод: {hybrid_output}")
+    print(f"Простой LSB: {simple_output}")
     print("=" * 60)
 
 def extract_message():
@@ -76,43 +71,35 @@ def extract_message():
         print("Ошибка: пароль не может быть пустым!")
         return
     
-    output_file = input("Файл для сохранения (txt): ").strip()
+    output_file = input("Файл для сохранения (просто тыкни Enter и будет дефолтный txt.txt): ").strip()
     if not output_file:
-        output_file = "extracted_message.txt"
+        output_file = "txt.txt"
+    output_file = "result/messages/" + output_file
     
-    print("\n[1/2] Извлечение данных из изображения...")
     try:
         extracted_data = StegoModule.extract_data_with_metadata(stego_path, password)
-        print(f"Извлечено {len(extracted_data)} байт")
     except Exception as e:
         print(f"Ошибка извлечения: {e}")
         return
     
-    print("[2/2] Расшифровка сообщения...")
     try:
         message = CryptoModule.extract_and_decrypt(extracted_data, password)
         
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(message)
         
-        print("\n" + "=" * 60)
-        print("УСПЕШНО ИЗВЛЕЧЕНО!")
-        print(f"Сообщение сохранено в: {output_file}")
-        print("\nПРЕДПРОСМОТР:")
+        print("\nЗашифрованный текст:")
         print("-" * 40)
         if len(message) > 200:
             print(message[:200] + "...")
         else:
             print(message)
         print("-" * 40)
-        print("=" * 60)
+        print(f"Сообщение сохранено в: {output_file}")
         
+
     except ValueError as e:
-        print(f"Ошибка: {e}")
-        print("Возможные причины:")
-        print("1. Неправильный пароль")
-        print("2. Повреждено стегоизображение")
-        print("3. Файл не содержит скрытых данных")
+        print(f"Ошибка извлечения: {e}")
     except Exception as e:
         print(f"Неожиданная ошибка: {e}")
 

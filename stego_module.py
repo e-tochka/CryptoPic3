@@ -67,7 +67,6 @@ class StegoModule:
         
         stego_img = Image.fromarray(stego_array)
         stego_img.save(output_path)
-        print(f"[SUCCESS] Данные встроены в {output_path}")
         
         return True
     
