@@ -141,6 +141,9 @@ def compare_methods():
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     
+    os.makedirs("result/imgs", exist_ok=True)
+    os.makedirs("result/messages", exist_ok=True)
+
     while True:
         print("\nМЕНЮ:")
         print("1. Зашифровать и встроить сообщение")
